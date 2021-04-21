@@ -40,7 +40,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
 
      mutating func choose(card: Card) {
         
-      
+      //lol
         sounds.playSounds(soundfile: "click.mp3")
         
         if let chosenIndex = cards.firstindex(matching: card), !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
