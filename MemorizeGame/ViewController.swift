@@ -19,17 +19,17 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var theContainer : UIView!
     
-    
+    let childView = UIHostingController(rootView: EmojiMemoryGameView(viewModel: EmojiMemoryGame()))
     
     
     var timer: Timer?
-    var milliseconds: Float = 25 * 1000 //10 seconds
+    var milliseconds: Float = 50 * 1000 //10 seconds
     
     
    override func viewDidLoad() {
         super.viewDidLoad()
         
-        let childView = UIHostingController(rootView: EmojiMemoryGameView(viewModel: EmojiMemoryGame()))
+        
         
         addChild(childView)
         childView.view.frame = theContainer.bounds
@@ -38,7 +38,8 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         //create timer
-        timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerElapsed), userInfo: nil, repeats: true)
+    timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerElapsed), userInfo: nil, repeats: true)
+    
     }
     
     override func didReceiveMemoryWarning() {
@@ -51,9 +52,8 @@ class ViewController: UIViewController {
     //Mark: - Tiimer Methods
     
     @objc func timerElapsed () {
-        
         milliseconds -= 1
-        
+        checkGameEnded()
         //Convert to seconds
         let seconds = String(format: "%.2f", milliseconds/1000)
         
@@ -64,9 +64,9 @@ class ViewController: UIViewController {
         if milliseconds <= 0 {
             
         //stop the timer
-        timer?.invalidate()
+            self.timer?.invalidate()
         timerLabel.textColor = UIColor.red
-        checkGameEnded()
+            
             
       
             
@@ -76,17 +76,16 @@ class ViewController: UIViewController {
     //Array<MemoryGame<String>.Card>()
     func checkGameEnded() {
         
-        
         var iswon = true
-        
-            for card in Array<MemoryGame<String>.Card>() {
-                print(card.isMatched)
-                if card.isMatched == true  {
-                iswon = true
-                break
-        
-    }
+        //for card in Array<MemoryGame<String>.Card>() {
+        print("Cards: ")
+        //print(EmojiMemoryGame.cards)
+        for card in childView.rootView.viewModel.cards {
+            if card.isMatched == false  {
+              iswon = false
+              break
             }
+        }
 
         
         
